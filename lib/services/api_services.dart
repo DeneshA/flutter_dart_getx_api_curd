@@ -27,6 +27,19 @@ class ApiServices {
       throw Exception(("Failed to create data"));
     }
   }
+  //Update a post (Update operation)
+  Future<void> updateData(int id,String title,String body) async{
+
+    final response = await http.put(Uri.parse('$baseUrl/posts/#id'),
+    body: json.encode({"id":id,
+    "title":title,
+    "body":body,
+    "userId":1}),
+    headers: {"content-type":"application/json; charset=UTF-8",},);
+    if(response.statusCode != 200){
+      throw Exception("failed to update record");
+    }
+  }
 
 //Delete a post (Delete operation)
   Future<void> deleteData(int id) async {
