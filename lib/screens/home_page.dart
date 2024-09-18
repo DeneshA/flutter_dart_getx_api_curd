@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dart_getx_api_curd/screens/edit_page.dart';
 import 'package:get/get.dart';
 import '../controllers/post_controller.dart';
 
@@ -12,7 +13,6 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('GetX CRUD App'),
         backgroundColor: Colors.grey.shade300,
-
       ),
       body: Obx(() {
         if (postController.isLoading.value) {
@@ -23,18 +23,30 @@ class HomePage extends StatelessWidget {
             itemBuilder: (context, index) {
               var post = postController.posts[index];
               return ListTile(
-                hoverColor: Colors.blue.shade300,
-                title: Text(post['title'].toString().toUpperCase() ,style: const TextStyle(fontSize:15),),
-                subtitle: Text(post['body'].toString(),textAlign: TextAlign.justify
-                  ,style: const TextStyle(fontSize: 10,
-                ),),
+                title: Text(
+                  post['title'].toString().toUpperCase(),
+                  style: const TextStyle(fontSize: 15),
+                ),
+                subtitle: Text(
+                  post['body'].toString(),
+                  textAlign: TextAlign.justify,
+                  style: const TextStyle(
+                    fontSize: 10,
+                  ),
+                ),
+                onTap: () {
+                  //Navigate to EditPage with post data
+                  Get.to(() => EditPage(
+                      postId: post['id'],
+                      initialTitle: post['title'],
+                      initialBody: post['body']));
+                },
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       icon: const Icon(Icons.edit),
                       onPressed: () {
-                        //call updated post
                         postController.updatePost(
                             post['id'], 'Updated Title', 'Updated Body');
                       },
@@ -49,9 +61,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               );
-
             });
-
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
